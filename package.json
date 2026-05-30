@@ -1,0 +1,14 @@
+{
+  "name": "trello-api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "khanhlearn mern stack",
+  "main": "index.js",
+  "repository": "https://github.com/src/server.js",
+  "author": "khanhleanr ",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
