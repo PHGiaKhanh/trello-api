@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Updated by trungquandev.com's author on August 17 2023
  * YouTube: https://youtube.com/@trungquandev
@@ -5,29 +6,49 @@
  */
 
 import express from 'express'
-import { mapOrder } from '~/utils/sorts.js'
+import exitHook from 'async-exit-hook'
+import { CONNECT_DB, CLOSE_DB } from '~/config/mongodb.js'
+import { env } from '~/config/environment.js'
 
-const app = express()
+//khởi động server back-end sau khi Connect database thành công
+const START_SERVER = async () => {
+  const app = express()
 
-const hostname = 'localhost'
-const port = 8017
+  app.get('/', async (req, res) => {
+    console.log(process.env)
+    res.end('<h1>Hello World!</h1><hr>')
+  })
 
-app.get('/', (req, res) => {
-  // Test Absolute import mapOrder
-  // eslint-disable-next-line no-console
-  console.log(mapOrder(
-    [ { id: 'id-1', name: 'One' },
-      { id: 'id-2', name: 'Two' },
-      { id: 'id-3', name: 'Three' },
-      { id: 'id-4', name: 'Four' },
-      { id: 'id-5', name: 'Five' } ],
-    ['id-5', 'id-4', 'id-2', 'id-3', 'id-1'],
-    'id'
-  ))
-  res.end('<h1>Hello World!</h1><hr>')
-})
+  app.listen(env.APP_PORT, env.APP_HOST, () => {
+    console.log(`3. HI ${env.AUTHOR}, BE is running at http://${ env.APP_HOST }:${ env.APP_PORT }/`)
+  })
 
-app.listen(port, hostname, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Hello Trung Quan Dev, I am running at http://${ hostname }:${ port }/`)
-})
+  exitHook(() => {
+    console.log('4. Server is shutting down...')
+    CLOSE_DB()
+    console.log('5. Disconnected from MongoDB. Exiting process.')
+  })
+}
+
+(async () => {
+  try {
+    console.log('1. Starting server...')
+    await CONNECT_DB()
+    console.log('2. Connected to MongoDB')
+
+    START_SERVER()
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error)
+    process.exit(0)
+  }
+})()
+// //khi kết nối thành công tới database thì mới Start server back-end lên
+// console.log('1. Connecting to MongoDB...')
+// CONNECT_DB()
+//   .then(() => console.log('2. Connected to MongoDB') )
+//   .then(() => START_SERVER() )
+//   .catch(error => {
+//     console.error('Error connecting to MongoDB:', error)
+//     process.exit(0)
+//   })
+
