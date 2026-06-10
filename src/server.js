@@ -9,15 +9,17 @@ import express from 'express'
 import exitHook from 'async-exit-hook'
 import { CONNECT_DB, CLOSE_DB } from '~/config/mongodb.js'
 import { env } from '~/config/environment.js'
+import { APIs_V1 } from '~/routes/v1'
 
 //khởi động server back-end sau khi Connect database thành công
 const START_SERVER = async () => {
   const app = express()
 
-  app.get('/', async (req, res) => {
-    console.log(process.env)
-    res.end('<h1>Hello World!</h1><hr>')
-  })
+  app.use(express.json())
+
+  //Use API v1
+  app.use('/v1', APIs_V1)
+
 
   app.listen(env.APP_PORT, env.APP_HOST, () => {
     console.log(`3. HI ${env.AUTHOR}, BE is running at http://${ env.APP_HOST }:${ env.APP_PORT }/`)
