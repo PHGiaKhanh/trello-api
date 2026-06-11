@@ -14,14 +14,14 @@ const createNew = async (req, res, next) => {
     description: Joi.string().required().min(3).max(256).trim().strict()
   })
   try {
-    console.log(req.body)
+
     await correctCondition.validateAsync(req.body, { abortEarly: false })
-    // next()
-    res.status(StatusCodes.CREATED).json({ message: 'POST from Validation: Create a new note' })
+    //validate dữ liệu xong và hợp lệ thì cho req sang Controller
+    next()
   } catch (error) {
     console.log(error)
     console.log(new Error(error).message)
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({ 
+    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
       errors: new Error(error).message
     })
   }
