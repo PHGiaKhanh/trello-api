@@ -1,16 +1,9 @@
-/* eslint-disable no-console */
-/**
- * Updated by trungquandev.com's author on August 17 2023
- * YouTube: https://youtube.com/@trungquandev
- * "A bit of fragrance clings to the hand that gives flowers!"
- */
-
 import express from 'express'
 import exitHook from 'async-exit-hook'
 import { CONNECT_DB, CLOSE_DB } from '~/config/mongodb.js'
 import { env } from '~/config/environment.js'
 import { APIs_V1 } from '~/routes/v1'
-
+import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware.js'
 //khởi động server back-end sau khi Connect database thành công
 const START_SERVER = async () => {
   const app = express()
@@ -20,6 +13,8 @@ const START_SERVER = async () => {
   //Use API v1
   app.use('/v1', APIs_V1)
 
+  //Middleware xử lý lỗi tập trung
+  app.use(errorHandlingMiddleware)
 
   app.listen(env.APP_PORT, env.APP_HOST, () => {
     console.log(`3. HI ${env.AUTHOR}, BE is running at http://${ env.APP_HOST }:${ env.APP_PORT }/`)
