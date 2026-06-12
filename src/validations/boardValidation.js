@@ -1,10 +1,11 @@
 import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
+import ApiError from '~/utils/ApiError'
 
 const createNew = async (req, res, next) => {
   const correctCondition = Joi.object({
     title: Joi.string().required().min(3).max(50).trim().strict().messages({
-      'anyrequired': 'Title is required',
+      'any.required': 'Title is required',
       'string.empty': 'Title cannot be empty',
       'string.min': 'Title must be at least 3 characters long',
       'string.max': 'Title must be at most 50 characters long',
@@ -19,11 +20,9 @@ const createNew = async (req, res, next) => {
     //validate dữ liệu xong và hợp lệ thì cho req sang Controller
     next()
   } catch (error) {
-    console.log(error)
-    console.log(new Error(error).message)
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
-      errors: new Error(error).message
-    })
+    // const errorMessages = new Error(error).message
+    // const customeError = new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, errorMessages)
+    next(new ApiError(StatusCodes.UNPROCESSABLE_ENTITY, new Error(error).message))
   }
 }
 
