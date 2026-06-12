@@ -1,7 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
-import ApiError from '~/utils/ApiError'
 
-const createNew = async (req, res,next) => {
+const createNew = async (req, res, next) => {
   try {
     // console.log('req.body:', req.body)
     // console.log('req.query:', req.query)
@@ -11,9 +10,9 @@ const createNew = async (req, res,next) => {
     // console.log('req.jwtDecoded:', req.jwtDecoded)
 
     // Điều hướng dữ liệu sang tầng Service
-    throw new ApiError(StatusCodes.BAD_GATEWAY, 'khanh test error')
+    //throw new ApiError(StatusCodes.BAD_GATEWAY, 'khanh test error')
     //Có kết quả thì trả về phía client
-    //res.status(StatusCodes.CREATED).json({ message: 'POST from : Create a new note' })
+    res.status(StatusCodes.CREATED).json({ message: 'POST from : Create a new note' })
   } catch (error) { next(error) }
 }
 
