@@ -1,4 +1,6 @@
 import { slugify } from '~/utils/formatters.js'
+import { boardModel } from '~/models/boardModel.js'
+
 
 const createNew = async (reqBody) => {
   // eslint-disable-next-line no-useless-catch
@@ -9,9 +11,15 @@ const createNew = async (reqBody) => {
       slug: slugify(reqBody.title)
     }
 
-    // Serviec bắt buộc có return về kết quả sau khi xử lý xong dữ liệu
-    return newBoard
-  } catch (error) {throw error}
+    // Gọi đến hàm createNew trong BoardModel để tạo bảng mới trong Database
+    const createdBoard = await boardModel.createNew(newBoard)
+    console.log('Created Board:', createdBoard)
+
+    //lấy bản ghi board sau khi gọi
+    const getNewBoard = await boardModel.findOneById(createdBoard.insertedId)
+    console.log('Get New Board:', getNewBoard)
+    return getNewBoard
+  } catch (error) { throw error }
 }
 
 export const boardService = {
