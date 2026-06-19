@@ -13,11 +13,9 @@ const createNew = async (reqBody) => {
 
     // Gọi đến hàm createNew trong BoardModel để tạo bảng mới trong Database
     const createdBoard = await boardModel.createNew(newBoard)
-    console.log('Created Board:', createdBoard)
 
     //lấy bản ghi board sau khi gọi
-    const getNewBoard = await boardModel.findOneById(createdBoard.insertedId)
-    console.log('Get New Board:', getNewBoard)
+    const getNewBoard = await boardModel.findOneById(createdBoard.insertedId.toString())
     return getNewBoard
   } catch (error) { throw error }
 }
