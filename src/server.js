@@ -1,4 +1,6 @@
 import express from 'express'
+import cors from 'cors'
+import { corsOptions} from '~/config/cors'
 import exitHook from 'async-exit-hook'
 import { CONNECT_DB, CLOSE_DB } from '~/config/mongodb.js'
 import { env } from '~/config/environment.js'
@@ -7,6 +9,9 @@ import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware.j
 //khởi động server back-end sau khi Connect database thành công
 const START_SERVER = async () => {
   const app = express()
+
+  //Xử lý CORS
+  app.use(cors(corsOptions))
 
   app.use(express.json())
 
