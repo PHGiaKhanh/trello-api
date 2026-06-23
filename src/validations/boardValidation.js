@@ -12,7 +12,8 @@ const createNew = async (req, res, next) => {
       'string.trim': 'Title cannot have leading or trailing whitespace'
       //ghi đè lên message của joi thành như trên (custome message)
     }),
-    description: Joi.string().required().min(3).max(256).trim().strict()
+    description: Joi.string().required().min(3).max(256).trim().strict(),
+    type: Joi.string().valid('public', 'private').required()
   })
   try {
 
