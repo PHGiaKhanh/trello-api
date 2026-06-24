@@ -1,7 +1,7 @@
 import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
 import ApiError from '~/utils/ApiError'
-
+import { BOARD_TYPES } from '~/utils/constants'
 const createNew = async (req, res, next) => {
   const correctCondition = Joi.object({
     title: Joi.string().required().min(3).max(50).trim().strict().messages({
@@ -13,7 +13,7 @@ const createNew = async (req, res, next) => {
       //ghi đè lên message của joi thành như trên (custome message)
     }),
     description: Joi.string().required().min(3).max(256).trim().strict(),
-    type: Joi.string().valid('public', 'private').required()
+    type: Joi.string().valid(BOARD_TYPES.PUBLIC, BOARD_TYPES.PRIVATE).required()
   })
   try {
 
