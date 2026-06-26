@@ -71,8 +71,12 @@ const getDetails = async (id) => {
   } catch (error) { throw new Error(error) }
 }
 
+//Push gia tri columnId vao cuoi mang columnOrderIds cua Board
 const pushColumnOrderIds = async (column) => {
+  try {
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate()
 
+  } catch (error) { throw new Error(error) }
 }
 
 export const boardModel = {
