@@ -28,9 +28,13 @@ const validateBeforeCreate = async (data) => {
 const createNew = async (data) => {
   try {
     const validData = await validateBeforeCreate(data)
-    console.log('validData:', validData)
+    //Biến đổi dữ liệu trước khi lưu vào db sang dạng ObjectId
+    const newColumnToAdd= {
+      ...validData,
+      boardId: new ObjectId(validData.boardId)
+    }
 
-    const createdColumn = await GET_DB().collection(COLUMN_COLLECTION_NAME).insertOne(validData)
+    const createdColumn = await GET_DB().collection(COLUMN_COLLECTION_NAME).insertOne(newColumnToAdd)
     return createdColumn
   } catch (error) { throw new Error(error) }
 }

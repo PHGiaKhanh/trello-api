@@ -30,7 +30,6 @@ const validateBeforeCreate = async (data) => {
 const createNew = async (data) => {
   try {
     const validData = await validateBeforeCreate(data)
-    console.log('validData:', validData)
 
     const createdBoard = await GET_DB().collection(BOARD_COLLECTION_NAME).insertOne(validData)
     return createdBoard
@@ -71,12 +70,18 @@ const getDetails = async (id) => {
     return result[0]||{}
   } catch (error) { throw new Error(error) }
 }
+
+const pushColumnOrderIds = async (column) => {
+
+}
+
 export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
   createNew,
   findOneById,
-  getDetails
+  getDetails,
+  pushColumnOrderIds
 }
 
 //boardID : 6a39f63bd485524f5cef9a8d
