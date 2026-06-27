@@ -74,8 +74,13 @@ const getDetails = async (id) => {
 //Push gia tri columnId vao cuoi mang columnOrderIds cua Board
 const pushColumnOrderIds = async (column) => {
   try {
-    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate()
+    const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
+      { _id: new ObjectId(column.boardId) },
+      { $push: { columnOrderIds: new ObjectId(column._id) } },
+      { returnDocument: 'after' }
+    )
 
+    return result.value || null
   } catch (error) { throw new Error(error) }
 }
 
