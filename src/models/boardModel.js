@@ -80,7 +80,7 @@ const pushColumnOrderIds = async (column) => {
       { returnDocument: 'after' }
     )
 
-    return result.value || null
+    return result.value
   } catch (error) { throw new Error(error) }
 }
 
