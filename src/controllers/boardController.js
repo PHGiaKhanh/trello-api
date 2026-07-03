@@ -44,5 +44,6 @@ const update = async (req, res, next) => {
 
 export const boardController = {
   createNew,
-  getDetails
+  getDetails,
+  update
 }
