@@ -19,6 +19,7 @@ const createNew = async (req, res, next) => {
 }
 
 const getDetails = async (req, res, next) => {
+
   try {
     // console.log('req.params:', req.params)
     const boardId = req.params.id
@@ -30,7 +31,19 @@ const getDetails = async (req, res, next) => {
   } catch (error) { next(error) }
 }
 
+const update = async (req, res, next) => {
+  try {
+    const boardId = req.params.id
+
+    const updatedBoard = await boardService.update(boardId, req.body)
+    //throw new ApiError(StatusCodes.BAD_GATEWAY, 'khanh test error')
+    //Có kết quả thì trả về phía client
+    res.status(StatusCodes.OK).json(updatedBoard)
+  } catch (error) { next(error) }
+}
+
 export const boardController = {
   createNew,
-  getDetails
+  getDetails,
+  update
 }
