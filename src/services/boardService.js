@@ -35,9 +35,9 @@ const getDetails = async (boardId) => {
     //Đưa card về đúng column của nó
     resBoard.columns.forEach(column => {
       //cách 1: dùng toString() của javascript
-      column.cards = resBoard.cards.filter(card => card.columnId.toString() === column._id.toString())
-      // cáh 2: hàm equals trong mongDB
-      //column.cards = resBoard.cards.filter(card => card.columnId.equals(column._id))
+      //column.cards = resBoard.cards.filter(card => card.columnId.toString() === column._id.toString())
+      // cách 2: hàm equals trong mongDB
+      column.cards = resBoard.cards.filter(card => card.columnId.equals(column._id))
     })
 
     //Xóa card khỏi board ban đầu

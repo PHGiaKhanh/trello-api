@@ -95,6 +95,11 @@ const update = async (boardId, updateData) => {
       }
     })
 
+    //Biến đổi dữ liệu trước khi lưu vào db sang dạng ObjectId
+    if (updateData.columnOrderIds) {
+      updateData.columnOrderIds = updateData.columnOrderIds.map( _id => new ObjectId(_id))
+    }
+
     console.log('updateData:', updateData)
     const result = await GET_DB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
       { _id: new ObjectId(boardId) },
