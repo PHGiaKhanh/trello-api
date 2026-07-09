@@ -1,8 +1,10 @@
 import { slugify } from '~/utils/formatters.js'
 import { boardModel } from '~/models/boardModel.js'
+import { cardModel } from '~/models/cardModel.js'
 import { ApiError } from '~/utils/ApiError.js'
 import { StatusCodes } from 'http-status-codes'
 import { cloneDeep } from 'lodash'
+import { columnModel } from '~/models/columnModel.js'
 
 const createNew = async (reqBody) => {
   try {
@@ -56,9 +58,32 @@ const update = async (boardId, reqBody) => {
   } catch (error) { throw error }
 }
 
+const moveCardToAnotherColumn = async (reqBody) => {
+  // eslint-disable-next-line no-useless-catch
+  try {
+  //Khi di chuyển card sang col khác
+  //B1: Cập nhật mảng cardOrderIds của col chứa card cũ (sourceColumnId)
+    await columnModel.update(reqBody.prevColumnId, {
+      cardOrderIds: reqBody.prevCardOrderIds,
+      updatedAt: Date.now()
+    } )
+    //B2: Cập nhật mảng cardOrderIds của col chứa card mới (destinationColumnId)
+    await columnModel.update(reqBody.nextColumnId, {
+      cardOrderIds: reqBody.nextCardOrderIds,
+      updatedAt: Date.now()
+    } )
+    //B3: Cập nhật columnId mới của Card đã kéo-> vieets API riêng
+    await cardModel.update(reqBody.currentCardId, {
+      columnId: reqBody.nextColumnId
+    } )
+    return { updateResult: 'Successfully!' }
+  } catch (error) { throw error }
+}
+
 
 export const boardService = {
   createNew,
   getDetails,
-  update
+  update,
+  moveCardToAnotherColumn
 }
