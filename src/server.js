@@ -21,9 +21,19 @@ const START_SERVER = async () => {
   //Middleware xử lý lỗi tập trung
   app.use(errorHandlingMiddleware)
 
-  app.listen(env.APP_PORT, env.APP_HOST, () => {
-    console.log(`3. HI ${env.AUTHOR}, BE is running at http://${ env.APP_HOST }:${ env.APP_PORT }/`)
-  })
+
+  if (env.BUILD_MODE === 'production') {
+    // môi trường production ( hiện tại đang support trên Render.com )
+    app.listen(process.env.PORT, () => {
+      console.log(`3. Production : HI ${env.AUTHOR}, BE is running at http://${process.env.PORT}/`)
+    })
+  } else {
+    // môi trường dev
+    app.listen(env.LOCAL_DEV_APP_PORT, env.LOCAL_DEV_APP_HOST, () => {
+      console.log(`3. Local DEV : HI ${env.AUTHOR}, BE is running at http://${ env.LOCAL_DEV_APP_HOST }:${ env.LOCAL_DEV_APP_PORT }/`)
+    })
+  }
+
 
   exitHook(() => {
     console.log('4. Server is shutting down...')
